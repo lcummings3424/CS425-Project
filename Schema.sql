@@ -91,7 +91,8 @@ CREATE TABLE
     flashcards (
         flashcard_id INTEGER PRIMARY KEY,
         question TEXT NOT NULL,
-        answer TEXT NOT NULL
+        answer TEXT NOT NULL,
+        answer_explanation TEXT
     );
 
 -- Flashcard content type table
