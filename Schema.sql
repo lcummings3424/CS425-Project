@@ -2,7 +2,9 @@
 CREATE TABLE
     users (
         user_id INTEGER PRIMARY KEY,
-        user_name TEXT NOT NULL,
+        first_name TEXT NOT NULL,
+        middle_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         hashed_password TEXT NOT NULL,
         join_date DATE DEFAULT CURRENT_DATE,
