@@ -69,10 +69,16 @@ CREATE TABLE
         answer TEXT NOT NULL
     );
 
--- User score Table
-CREATE TABLE
-    user_score (
+-- Quiz taken table 
+CREATE TABLE 
+    taken (
         user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
+        quiz_id INTEGER REFERENCES quizzes (quiz_id)
+    )
+
+-- Quiz scores Table
+CREATE TABLE
+    quiz_scores (
         quiz_id INTEGER REFERENCES quizzes (quiz_id),
         score INTEGER,
         date_taken DATE DEFAULT CURRENT_DATE
