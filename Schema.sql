@@ -1,7 +1,7 @@
 -- Users Table
 CREATE TABLE
     users (
-        user_id INTEGER PRIMARY KEY,
+        user_id INTEGER UNIQUE PRIMARY KEY,
         first_name TEXT NOT NULL,
         middle_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
@@ -13,10 +13,7 @@ CREATE TABLE
 
 -- Area of Focus Table
 CREATE TABLE
-    area_of_focus (
-        area_name TEXT NOT NULL,
-        description TEXT
-    );
+    area_of_focus (area_name TEXT NOT NULL, description TEXT);
 
 -- Content type details table 
 CREATE TABLE
@@ -108,4 +105,11 @@ CREATE TABLE
         quiz_id INTEGER REFERENCES quizzes (quiz_id),
         score INTEGER,
         letter_grade CHAR(1) CHECK (letter_grade IN ('A', 'B', 'C', 'D', 'F'))
-    )
+    );
+
+-- Referred table
+CREATE TABLE
+    referred (
+        user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
+        referred_by INTEGER PRIMARY KEY
+    );
