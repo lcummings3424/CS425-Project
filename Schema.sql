@@ -117,3 +117,9 @@ CREATE TABLE
         user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
         referred_by INTEGER PRIMARY KEY
     );
+
+-- Admin accounts table 
+CREATE TABLE
+    admin_users (
+        admin_code INTEGER NOT NULL
+    ) INHERITS (users);
