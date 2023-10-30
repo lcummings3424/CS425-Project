@@ -13,7 +13,10 @@ CREATE TABLE
 
 -- Area of Focus Table
 CREATE TABLE
-    area_of_focus (area_name TEXT NOT NULL, description TEXT);
+    area_of_focus (
+        area_name TEXT NOT NULL, 
+         description TEXT
+    );
 
 -- Content type details table 
 CREATE TABLE
