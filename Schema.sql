@@ -54,7 +54,6 @@ CREATE TABLE
 CREATE TABLE
     quizzes (
         quiz_id INTEGER PRIMARY KEY,
-        total_questions INTEGER,
         passing_score INTEGER,
         quiz_type TEXT NOT NULL CHECK (quiz_type IN ('placement', 'practice', 'final')),
         time_limit INTEGER
@@ -83,7 +82,8 @@ CREATE TABLE
 CREATE TABLE
     has_questions (
         question_id INTEGER PRIMARY KEY REFERENCES questions (question_id),
-        quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id)
+        quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id),
+        total_questions INTEGER
     );
 
 -- Flashcard Sets Table
