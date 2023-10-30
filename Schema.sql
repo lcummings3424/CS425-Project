@@ -30,7 +30,6 @@ CREATE TABLE
 CREATE TABLE
     contents (
         content_id INTEGER PRIMARY KEY,
-        media_type TEXT NOT NULL,
         content_title TEXT NOT NULL,
         description TEXT
     );
@@ -46,7 +45,8 @@ CREATE TABLE
 CREATE TABLE
     content_focus (
         area_name TEXT PRIMARY KEY REFERENCES area_of_focus (area_name),
-        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
+        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id),
+        media_type TEXT NOT NULL
     );
 
 -- Quizzes Table
