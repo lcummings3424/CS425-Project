@@ -14,7 +14,6 @@ CREATE TABLE
 -- Area of Focus Table
 CREATE TABLE
     area_of_focus (
-        focus_area_id INTEGER PRIMARY KEY,
         area_name TEXT NOT NULL,
         description TEXT
     );
@@ -46,7 +45,7 @@ CREATE TABLE
 -- Content focus table
 CREATE TABLE
     content_focus (
-        focus_area_id INTEGER PRIMARY KEY REFERENCES area_of_focus (focus_area_id),
+        area_name TEXT PRIMARY KEY REFERENCES area_of_focus (area_name),
         content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
     );
 
