@@ -15,7 +15,7 @@ CREATE TABLE
 CREATE TABLE
     area_of_focus (
         area_name TEXT NOT NULL, 
-         description TEXT
+        description TEXT
     );
 
 -- Content type details table 
