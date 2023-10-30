@@ -37,20 +37,18 @@ CREATE TABLE
     );
 
 -- Content type table 
-CREATE TABLE 
+CREATE TABLE
     content_type (
         content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id),
         content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
     )
-
--- Content focus table
-CREATE TABLE    
+    -- Content focus table
+CREATE TABLE
     content_focus (
         focus_area_id INTEGER PRIMARY KEY REFERENCES area_of_focus (focus_area_id),
         content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
     )
-
--- Quizzes Table
+    -- Quizzes Table
 CREATE TABLE
     quizzes (
         quiz_id INTEGER PRIMARY KEY,
@@ -61,13 +59,12 @@ CREATE TABLE
     );
 
 -- Quiz content type Table 
-CREATE TABLE 
+CREATE TABLE
     quiz_content_type (
         quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id),
         content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id)
     )
-
--- Questions Table
+    -- Questions Table
 CREATE TABLE
     questions (
         question_id INTEGER PRIMARY KEY,
@@ -80,13 +77,12 @@ CREATE TABLE
     );
 
 -- Quiz has questions table
-CREATE TABLE    
+CREATE TABLE
     has_questions (
         question_id INTEGER PRIMARY KEY REFERENCES questions (question_id),
         quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id)
     )
-
--- Flashcard Sets Table
+    -- Flashcard Sets Table
 CREATE TABLE
     flashcards (
         flashcard_id INTEGER PRIMARY KEY,
@@ -96,18 +92,17 @@ CREATE TABLE
     );
 
 -- Flashcard content type table
-CREATE TABLE 
+CREATE TABLE
     flashcard_content_type (
         flashcard_id INTEGER PRIMARY KEY REFERENCES flashcards (flashcard_id),
-        content_type_id INTEGER REFERENCES content_type (content_type_id)
+        content_type_id INTEGER REFERENCES content_type_details (content_type_id)
     )
-
--- Quiz taken table 
-CREATE TABLE 
+    -- Quiz taken table 
+CREATE TABLE
     taken (
         user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
         quiz_id INTEGER REFERENCES quizzes (quiz_id),
         date_taken DATE DEFAULT CURRENT_DATE,
         score INTEGER,
-        letter_grade CHAR(1) CHECK (letter_grade IN ('A', 'B', 'C', 'D', 'F')) 
+        letter_grade CHAR(1) CHECK (letter_grade IN ('A', 'B', 'C', 'D', 'F'))
     )
