@@ -102,7 +102,6 @@ CREATE TABLE
     taken (
         user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
         quiz_id INTEGER REFERENCES quizzes (quiz_id),
-        date_taken DATE DEFAULT CURRENT_DATE,
         score INTEGER,
         letter_grade CHAR(1) CHECK (letter_grade IN ('A', 'B', 'C', 'D', 'F'))
     )
