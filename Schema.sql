@@ -38,15 +38,15 @@ CREATE TABLE
 CREATE TABLE
     content_type (
         content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id),
-        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
+        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id),
+        media_type TEXT NOT NULL
     );
 
 -- Content focus table
 CREATE TABLE
     content_focus (
         area_name TEXT PRIMARY KEY REFERENCES area_of_focus (area_name),
-        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id),
-        media_type TEXT NOT NULL
+        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
     );
 
 -- Quizzes Table
