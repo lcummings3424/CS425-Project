@@ -1,7 +1,7 @@
 import psycopg2
 
 con = psycopg2.connect(
-    database="EducationPlatform",
+    database="test",
     user="postgres",
     password="postgres",
     host="localhost",
