@@ -8,7 +8,7 @@ CREATE TABLE
         email TEXT UNIQUE NOT NULL,
         hashed_password TEXT NOT NULL,
         join_date DATE DEFAULT CURRENT_DATE,
-        joined_time INTEGER,
+        joined_time TIME DEFAULT CURRENT_TIME,
         phone BIGINT UNIQUE
     );
 
