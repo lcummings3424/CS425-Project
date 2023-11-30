@@ -15,7 +15,7 @@ CREATE TABLE
 -- Area of Focus Table
 CREATE TABLE
     area_of_focus (
-        area_name TEXT NOT NULL, 
+        area_name TEXT PRIMARY KEY NOT NULL, 
         description TEXT
     );
 
@@ -38,16 +38,16 @@ CREATE TABLE
 -- Content type table 
 CREATE TABLE
     content_type (
-        content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id),
-        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id),
+        content_type_id INTEGER REFERENCES content_type_details (content_type_id),
+        content_id INTEGER REFERENCES contents (content_id),
         media_type TEXT NOT NULL
     );
 
 -- Content focus table
 CREATE TABLE
     content_focus (
-        area_name TEXT PRIMARY KEY REFERENCES area_of_focus (area_name),
-        content_id INTEGER PRIMARY KEY REFERENCES contents (content_id)
+        area_name TEXT REFERENCES area_of_focus (area_name),
+        content_id INTEGER REFERENCES contents (content_id)
     );
 
 -- Quizzes Table
@@ -62,8 +62,8 @@ CREATE TABLE
 -- Quiz content type Table 
 CREATE TABLE
     quiz_content_type (
-        quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id),
-        content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id)
+        quiz_id INTEGER REFERENCES quizzes (quiz_id),
+        content_type_id INTEGER REFERENCES content_type_details (content_type_id)
     );
 
 -- Questions Table
@@ -81,8 +81,8 @@ CREATE TABLE
 -- Quiz has questions table
 CREATE TABLE
     has_questions (
-        question_id INTEGER PRIMARY KEY REFERENCES questions (question_id),
-        quiz_id INTEGER PRIMARY KEY REFERENCES quizzes (quiz_id),
+        question_id INTEGER REFERENCES questions (question_id),
+        quiz_id INTEGER REFERENCES quizzes (quiz_id),
         total_questions INTEGER
     );
 
@@ -98,15 +98,15 @@ CREATE TABLE
 -- Flashcard content type table
 CREATE TABLE
     flashcard_content_type (
-        flashcard_id INTEGER PRIMARY KEY REFERENCES flashcards (flashcard_id),
-        content_type_id INTEGER PRIMARY KEY REFERENCES content_type_details (content_type_id)
+        flashcard_id INTEGER REFERENCES flashcards (flashcard_id),
+        content_type_id INTEGER REFERENCES content_type_details (content_type_id)
     );
 
 -- Quiz taken table 
 CREATE TABLE
     taken (
-        user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
-        quiz_id INTEGER PRIMARY KEY quizzes (quiz_id),
+        user_id INTEGER REFERENCES users (user_id),
+        quiz_id INTEGER REFERENCES quizzes (quiz_id),
         score INTEGER,
         letter_grade CHAR(1) CHECK (letter_grade IN ('A', 'B', 'C', 'D', 'F'))
     );
@@ -114,8 +114,8 @@ CREATE TABLE
 -- Referred table
 CREATE TABLE
     referred (
-        user_id INTEGER PRIMARY KEY REFERENCES users (user_id),
-        referred_by INTEGER PRIMARY KEY
+        user_id INTEGER REFERENCES users (user_id),
+        referred_by INTEGER
     );
 
 -- Admin accounts table 
