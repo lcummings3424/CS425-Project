@@ -9,7 +9,7 @@ CREATE TABLE
         hashed_password TEXT NOT NULL,
         join_date DATE DEFAULT CURRENT_DATE,
         joined_time INTEGER,
-        phone INTEGER UNIQUE
+        phone BIGINT UNIQUE
     );
 
 -- Area of Focus Table
