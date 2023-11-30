@@ -8,7 +8,7 @@ con = psycopg2.connect(
     port="5432",
 )
 cursor_obj = con.cursor()
-sql_file = open('Sample_data.sql','r')
+sql_file = open("Sample_data.sql", "r")
 cursor_obj.execute(sql_file.read())
 con.commit()
 cursor_obj.execute("SELECT * FROM users")

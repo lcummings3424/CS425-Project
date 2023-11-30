@@ -15,7 +15,7 @@ CREATE TABLE
 -- Area of Focus Table
 CREATE TABLE
     area_of_focus (
-        area_name TEXT PRIMARY KEY NOT NULL, 
+        area_name TEXT PRIMARY KEY NOT NULL,
         description TEXT
     );
 
@@ -120,6 +120,4 @@ CREATE TABLE
 
 -- Admin accounts table 
 CREATE TABLE
-    admin_users (
-        admin_code INTEGER NOT NULL
-    ) INHERITS (users);
+    admin_users (admin_code INTEGER NOT NULL) INHERITS (users);
