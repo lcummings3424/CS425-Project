@@ -3,7 +3,7 @@ CREATE TABLE
     users (
         user_id INTEGER UNIQUE PRIMARY KEY,
         first_name TEXT NOT NULL,
-        middle_name TEXT NOT NULL,
+        middle_name TEXT,
         last_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         hashed_password TEXT NOT NULL,
