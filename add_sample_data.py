@@ -1,5 +1,4 @@
 import psycopg2
-import tkinter as tk
 
 con = psycopg2.connect(
     database="test",
