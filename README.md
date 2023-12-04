@@ -1,5 +1,7 @@
 # CS425-Project
+
 This project makes a few assumptions:
+
 - you have postgresql installed on your system
 - you have the admin username set up as "postgres"
 - you have the admin passwoed set up as "posgres"
