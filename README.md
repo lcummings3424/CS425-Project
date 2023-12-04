@@ -6,6 +6,7 @@ This project makes a few assumptions:
 - you have the admin username set up as "postgres"
 - you have the admin passwoed set up as "posgres"
 - you have the Schema.sql file hosted on your system (localhost) with the name "Education Platform"
+- on my system, i use [Postbird](https://github.com/Paxa/postbird) for importing the sql file and setting up the database 
 - you have run "add_sample_data.py"
 - the database is hosted on port 5432
 
