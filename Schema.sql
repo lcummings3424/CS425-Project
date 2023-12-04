@@ -40,7 +40,7 @@ CREATE TABLE
     content_type (
         content_type_id INTEGER REFERENCES content_type_details (content_type_id),
         content_id INTEGER REFERENCES contents (content_id),
-        media_type TEXT NOT NULL
+        media_type TEXT NOT NULL CHECK (media_type IN ('text', 'video', 'audio'))
     );
 
 -- Content focus table
