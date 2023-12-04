@@ -15,6 +15,7 @@ cursor_obj = con.cursor()
 LARGEFONT = ("Verdana", 35)
 
 email = ""
+check_upd1 = False
 
 
 class tkinterApp(tk.Tk):
@@ -86,43 +87,51 @@ class Page1(tk.Frame):
 
 class Page2(tk.Frame):
     global email
+    global check_upd1
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        button1 = ttk.Button(
+            self, text="Back", command=lambda: controller.show_frame(Page1)
+        )
+        button1.pack()
 
     def update(self):
-        sql = f"SELECT * FROM users WHERE email = '{email}';"
-        cursor_obj.execute(sql)
-        result = cursor_obj.fetchall()
-        id = result[0][0]
-        first = result[0][1]
-        middle = result[0][2]
-        last = result[0][3]
-        em = result[0][4]
-        pw = result[0][5]
-        jd = result[0][6]
-        jt = result[0][7]
-        ph = result[0][8]
+        global check_upd1
+        if not check_upd1:
+            check_upd1 = True
+            sql = f"SELECT * FROM users WHERE email = '{email}';"
+            cursor_obj.execute(sql)
+            result = cursor_obj.fetchall()
+            id = result[0][0]
+            first = result[0][1]
+            middle = result[0][2]
+            last = result[0][3]
+            em = result[0][4]
+            pw = result[0][5]
+            jd = result[0][6]
+            jt = result[0][7]
+            ph = result[0][8]
 
-        label_id = ttk.Label(self, text=f"ID: {id}")
-        label_first = ttk.Label(self, text=f"First Name: {first}")
-        label_middle = ttk.Label(self, text=f"Middle Name: {middle}")
-        label_last = ttk.Label(self, text=f"Last Name: {last}")
-        label_em = ttk.Label(self, text=f"Email: {em}")
-        label_pw = ttk.Label(self, text=f"Password: {pw}")
-        label_jd = ttk.Label(self, text=f"Join Date: {jd}")
-        label_jt = ttk.Label(self, text=f"Job Title: {jt}")
-        label_ph = ttk.Label(self, text=f"Phone: {ph}")
+            label_id = ttk.Label(self, text=f"ID: {id}")
+            label_first = ttk.Label(self, text=f"First Name: {first}")
+            label_middle = ttk.Label(self, text=f"Middle Name: {middle}")
+            label_last = ttk.Label(self, text=f"Last Name: {last}")
+            label_em = ttk.Label(self, text=f"Email: {em}")
+            label_pw = ttk.Label(self, text=f"Password: {pw}")
+            label_jd = ttk.Label(self, text=f"Join Date: {jd}")
+            label_jt = ttk.Label(self, text=f"Join Time: {jt}")
+            label_ph = ttk.Label(self, text=f"Phone: {ph}")
 
-        label_id.pack()
-        label_first.pack()
-        label_middle.pack()
-        label_last.pack()
-        label_em.pack()
-        label_pw.pack()
-        label_jd.pack()
-        label_jt.pack()
-        label_ph.pack()
+            label_id.pack()
+            label_first.pack()
+            label_middle.pack()
+            label_last.pack()
+            label_em.pack()
+            label_pw.pack()
+            label_jd.pack()
+            label_jt.pack()
+            label_ph.pack()
 
 
 app = tkinterApp()
