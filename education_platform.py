@@ -52,7 +52,7 @@ class StartPage(tk.Frame):
         self.controller = controller
         entry1 = ttk.Entry(r, width=30)
         entry2 = ttk.Entry(r, width=30)
-
+        self.winfo_toplevel().title("Education Platform")
         entry1.pack(pady=10)
         entry2.pack(pady=10)
 
@@ -79,6 +79,7 @@ class StartPage(tk.Frame):
 class Page1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.winfo_toplevel().title("Education Platform")
         button1 = ttk.Button(
             self, text="Profile", command=lambda: controller.show_frame(Page2)
         )
@@ -91,6 +92,8 @@ class Page2(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.winfo_toplevel().title("Education Platform")
+
         button1 = ttk.Button(
             self, text="Back", command=lambda: controller.show_frame(Page1)
         )
