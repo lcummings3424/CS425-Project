@@ -11,9 +11,6 @@ con = psycopg2.connect(
     port="5432",
 )
 cursor_obj = con.cursor()
-
-LARGEFONT = ("Verdana", 35)
-
 email = ""
 check_upd1 = False
 
@@ -78,8 +75,19 @@ class StartPage(tk.Frame):
 
 class Page1(tk.Frame):
     def __init__(self, parent, controller):
+        self.controller = controller
+
+        global check_upd1
+
+        # def b2_click():
+        #     global check_upd1
+        #     check_upd1 = False
+        #     self.controller.show_frame(StartPage)
+
         tk.Frame.__init__(self, parent)
         self.winfo_toplevel().title("Education Platform")
+        # button2 = ttk.Button(self, text="Back", command=b2_click)
+        # button2.pack()
         button1 = ttk.Button(
             self, text="Profile", command=lambda: controller.show_frame(Page2)
         )
