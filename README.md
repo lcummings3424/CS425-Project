@@ -9,5 +9,5 @@ This project makes a few assumptions:
 - You have run "add_sample_data.py"
 - The database is hosted on port 5432
 
-It will not work if these items have not been completed (in that order)
+It will not work if these items have not been completed (in that order).
 If all of this has been completed, you can launch the executable located in \dist\education_platform
