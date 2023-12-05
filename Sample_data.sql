@@ -125,7 +125,6 @@ VALUES
         'Uncover the pivotal historical events and profound impact of World War II in this compelling module. Explore the causes and consequences of one of the most significant conflicts in human history, from the rise of totalitarian regimes to the Allied victory and the post-war geopolitical landscape. This course delves into the military strategies, key battles, and the human stories that shaped the course of the war. Gain a nuanced understanding of the social, economic, and political ramifications of World War II, and appreciate how it continues to influence the world today. Whether you are a history enthusiast or simply curious about the past, this module provides a comprehensive and insightful exploration of World War II.'
     );
 
-
 -- Content type table
 INSERT INTO
     content_type (content_type_id, content_id, media_type)
