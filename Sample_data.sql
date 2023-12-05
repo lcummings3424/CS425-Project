@@ -132,7 +132,7 @@ INSERT INTO
 VALUES
     (1, 1, 'text'),
     (2, 2, 'video'),
-    (3, 3, 'audio'),
+    (3, 5, 'audio'),
     (4, 4, 'text'),
     (5, 5, 'text');
 
