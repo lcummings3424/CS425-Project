@@ -292,6 +292,7 @@ class ContentPage(tk.Frame):
             FROM contents JOIN content_type
             ON contents.content_id = content_type.content_id
             JOIN content_type_details ON content_type.content_type_id = content_type_details.content_type_id
+            JOIN content_focus ON contents.content_id = content_focus.content_id
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
@@ -301,9 +302,12 @@ class ContentPage(tk.Frame):
             name = result[i][1]
             mt = result[i][5]
             ct = result[i][7]
+            af = result[i][9]
             label = ttk.Label(self, text=f"Media Type: {mt}")
             label.pack()
             label = ttk.Label(self, text=f"Content Type: {ct}")
+            label.pack()
+            label = ttk.Label(self, text=f"Area Of Focus: {af}")
             label.pack()
             self.button.append(
                 tk.Button(self, text=f"{name}", command=lambda i=i: self.open_this(i))
