@@ -10,4 +10,5 @@ This project makes a few assumptions:
 - You have run "add_sample_data.py"
 
 It will not work if these items have not been completed (in that order).
-If all of this has been completed, you can launch the executable located in \dist\education_platform
+If all of this has been completed, you can launch the executable located in \dist\education_platform.
+The executable will not work if it is not in the same folder as all files contained in \dist\education_platform (i.e. must be kept in the same structure as it is in the repository).
