@@ -37,6 +37,7 @@ class tkinterApp(tk.Tk):
             AdminLoginPage,
             ContentPage,
             ContentDescPage,
+            AOFInfo,
         ):
             frame = F(container, self)
 
@@ -320,14 +321,26 @@ class ContentPage(tk.Frame):
             # button.destroy()
             self.controller.show_frame(HomePage)
 
+        def AOFClick():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            self.controller.show_frame(AOFInfo)
+
         button = tk.Button(self, text="Back", width=25, command=back_click)
         button.pack()
+
+        button2 = tk.Button(
+            self, text="Area Of Focus Information", width=25, command=AOFClick
+        )
+        button2.pack()
 
     def open_this(self, myNum):
         # print(myNum)
         global descNum
         descNum = myNum + 1
         self.controller.show_frame(ContentDescPage)
+
 
 class ContentDescPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -345,9 +358,9 @@ class ContentDescPage(tk.Frame):
         result = cursor_obj.fetchall()[0]
         title = result[1]
         desc = result[2]
-        label1 = ttk.Label(self, text=f"Title: {title}",wraplength=300)
+        label1 = ttk.Label(self, text=f"Title: {title}", wraplength=300)
         label1.pack()
-        label2 = ttk.Label(self, text=f"Description: {desc}",wraplength=300)
+        label2 = ttk.Label(self, text=f"Description: {desc}", wraplength=300)
         label2.pack()
         r = self
 
@@ -359,6 +372,43 @@ class ContentDescPage(tk.Frame):
 
         button = tk.Button(r, text="Back", width=25, command=back_click)
         button.pack()
+
+
+class AOFInfo(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        sql = """
+        select *
+        from area_of_focus
+        """
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()
+        for i in range(result.__len__()):
+            name = result[i][0]
+            desc = result[i][1]
+            label = ttk.Label(self, text=f"Title: {name}")
+            label.pack()
+            label = ttk.Label(self, text=f"Description: {desc}")
+            label.pack()
+
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            self.controller.show_frame(ContentPage)
+
+        def aofstat_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            self.controller.show_frame(ContentPage)
+
+        button = tk.Button(self, text="Back", width=25, command=back_click)
+        button.pack()
+
+        button1 = tk.Button(self, text="Stats", width=25, command=aofstat_click)
+        button1.pack()
 
 
 app = tkinterApp()
