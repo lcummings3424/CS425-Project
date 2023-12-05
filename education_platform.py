@@ -2,6 +2,7 @@ import psycopg2
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import Label, StringVar
 
 con = psycopg2.connect(
     database="test",
@@ -27,7 +28,7 @@ class tkinterApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Page1, Page2):
+        for F in (StartPage, Page1, Page2, Page3):
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -47,11 +48,15 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         r = self
         self.controller = controller
+        label = ttk.Label(self, text="Email: ")
+        label2 = ttk.Label(self, text="Password: ")
+        label.pack(side="top")
         entry1 = ttk.Entry(r, width=30)
         entry2 = ttk.Entry(r, width=30)
         self.winfo_toplevel().title("Education Platform")
-        entry1.pack(pady=10)
-        entry2.pack(pady=10)
+        entry1.pack(pady=10, side="top")
+        label2.pack(side="top")
+        entry2.pack(pady=10, side="top")
 
         def login_click():
             username = entry1.get()
@@ -69,8 +74,14 @@ class StartPage(tk.Frame):
                     "ERROR", "That email and password combination does not exist"
                 )
 
+        def create_click():
+            self.controller.show_frame(Page3)
+
         button = tk.Button(r, text="Login", width=25, command=login_click)
         button.pack()
+
+        button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
+        button2.pack()
 
 
 class Page1(tk.Frame):
@@ -143,6 +154,61 @@ class Page2(tk.Frame):
             label_jd.pack()
             label_jt.pack()
             label_ph.pack()
+
+
+class Page3(tk.Frame):
+    def __init__(self, parent, controller):
+        def create_click():
+            maxSql = "SELECT max(user_id)FROM users"
+            cursor_obj.execute(maxSql)
+            maxID = cursor_obj.fetchall()[0][0]
+            ID = maxID + 1
+            email = entry1.get()
+            pw = entry2.get()
+            fn = entry3.get()
+            mn = entry4.get()
+            ln = entry5.get()
+            ph = entry6.get()
+            insertSQL = f"""INSERT INTO users 
+                            (user_id,first_name,middle_name,last_name,email,hashed_password,phone) 
+                            VALUES
+                            ({ID},'{fn}','{mn}','{ln}','{email}','{pw}',{ph})"""
+            cursor_obj.execute(insertSQL)
+            con.commit()
+            messagebox.showinfo("Notice", "Account has been successfully created")
+            self.controller.show_frame(StartPage)
+
+        tk.Frame.__init__(self, parent)
+        self.winfo_toplevel().title("Education Platform")
+        r = self
+        self.controller = controller
+        label = ttk.Label(self, text="Email: ")
+        label2 = ttk.Label(self, text="Password: ")
+        label.pack(side="top")
+        entry1 = ttk.Entry(r, width=30)
+        entry2 = ttk.Entry(r, width=30)
+        self.winfo_toplevel().title("Education Platform")
+        entry1.pack(pady=10, side="top")
+        label2.pack(side="top")
+        entry2.pack(pady=10, side="top")
+        entry3 = ttk.Entry(r, width=30)
+        entry4 = ttk.Entry(r, width=30)
+        entry5 = ttk.Entry(r, width=30)
+        entry6 = ttk.Entry(r, width=30)
+        label = ttk.Label(self, text="First name: ")
+        label.pack(side="top")
+        entry3.pack(pady=10, side="top")
+        label = ttk.Label(self, text="Middle name: ")
+        label.pack(side="top")
+        entry4.pack(pady=10, side="top")
+        label = ttk.Label(self, text="Last name: ")
+        label.pack(side="top")
+        entry5.pack(pady=10, side="top")
+        label = ttk.Label(self, text="Phone number: ")
+        label.pack(side="top")
+        entry6.pack(pady=10, side="top")
+        button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
+        button2.pack()
 
 
 app = tkinterApp()
