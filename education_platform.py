@@ -28,7 +28,7 @@ class tkinterApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Page1, Page2, Page3):
+        for F in (StartPage, Page1, Page2, Page3, Page4):
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -82,6 +82,13 @@ class StartPage(tk.Frame):
 
         button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
         button2.pack()
+        button3 = tk.Button(
+            r,
+            text="Admin Login",
+            width=25,
+            command=lambda: controller.show_frame(Page4),
+        )
+        button3.pack()
 
 
 class Page1(tk.Frame):
@@ -209,6 +216,52 @@ class Page3(tk.Frame):
         entry6.pack(pady=10, side="top")
         button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
         button2.pack()
+
+
+class Page4(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        r = self
+        self.controller = controller
+        label = ttk.Label(self, text="Email: ")
+        label2 = ttk.Label(self, text="Password: ")
+        label3 = ttk.Label(self, text="Admin Code: ")
+        label.pack(side="top")
+        entry1 = ttk.Entry(r, width=30)
+        entry2 = ttk.Entry(r, width=30)
+        entry3 = ttk.Entry(r, width=30)
+        self.winfo_toplevel().title("Education Platform")
+        entry1.pack(pady=10, side="top")
+        label2.pack(side="top")
+        entry2.pack(pady=10, side="top")
+        label3.pack(side="top")
+        entry3.pack(pady=10, side="top")
+
+        def login_click():
+            username = entry1.get()
+            password = entry2.get()
+            ac = entry3.get()
+            global email
+            email = username
+            check = f"SELECT EXISTS(SELECT 1 FROM admin_users WHERE email = '{username}' AND hashed_password = '{password}' AND admin_code = '{ac}')"
+            cursor_obj.execute(check)
+            result = cursor_obj.fetchall()
+            result = result[0][0]
+            if result == True:
+                self.controller.show_frame(Page1)
+            else:
+                messagebox.showerror(
+                    "ERROR", "That email and password combination does not exist"
+                )
+
+        def create_click():
+            self.controller.show_frame(Page3)
+
+        button = tk.Button(r, text="Login", width=25, command=login_click)
+        button.pack()
+
+        button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
+        # button2.pack()
 
 
 app = tkinterApp()
