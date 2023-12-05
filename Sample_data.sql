@@ -101,25 +101,30 @@ INSERT INTO
 VALUES
     (
         1,
-        'Introduction to Programming',
-        'Basic concepts and principles of programming'
+        'Object Oriented Programming',
+        'This course provides a comprehensive introduction to the fundamental concepts and principles of programming. Students will learn the basics of algorithmic thinking, problem-solving, and programming logic. Topics include variables, data types, control structures, and an overview of popular programming languages. By the end of the course, participants will have a solid foundation in programming that will serve as a springboard for more advanced studies in the field.'
     ),
     (
         2,
         'The Periodic Table',
-        'Chemical elements and their properties'
+        'Explore the fascinating world of chemistry with an in-depth study of the periodic table. This module delves into the properties of chemical elements, their atomic structures, and how they interact with each other. Gain insights into the historical development of the periodic table and understand how it serves as the organizing principle for the entire field of chemistry. Whether you are a student, a science enthusiast, or just curious about the elements that make up our world, this module provides a comprehensive overview of the periodic table and its significance.'
     ),
     (
         3,
         'Art History Overview',
-        'Major art movements and artists'
+        'Embark on a captivating journey through the rich tapestry of art history. This course offers an overview of major art movements and the influential artists who shaped them. From the Renaissance to modern and contemporary art, participants will gain a deep understanding of the evolution of artistic expression. Delve into the masterpieces that define each era and explore the cultural, social, and political contexts that influenced artistic developments. Whether you are an aspiring artist, art historian, or simply someone with a passion for creativity, this module provides a holistic perspective on the world of art.'
     ),
     (
         4,
         'Healthy Living Tips',
-        'Guidance on maintaining a healthy lifestyle'
+        'Discover practical guidance on maintaining a healthy lifestyle with this comprehensive module. Covering a wide range of topics, including nutrition, exercise, stress management, and sleep hygiene, this course equips participants with the knowledge and tools to make informed choices for a healthier life. Learn about the importance of balanced nutrition, effective workout routines, and strategies for managing stress in the fast-paced world of today. Whether you are a fitness enthusiast or someone looking to improve your overall well-being, this module offers valuable insights and actionable tips for a healthier and happier life.'
     ),
-    (5, 'World War II', 'Historical events and impact');
+    (
+        5,
+        'World War II',
+        'Uncover the pivotal historical events and profound impact of World War II in this compelling module. Explore the causes and consequences of one of the most significant conflicts in human history, from the rise of totalitarian regimes to the Allied victory and the post-war geopolitical landscape. This course delves into the military strategies, key battles, and the human stories that shaped the course of the war. Gain a nuanced understanding of the social, economic, and political ramifications of World War II, and appreciate how it continues to influence the world today. Whether you are a history enthusiast or simply curious about the past, this module provides a comprehensive and insightful exploration of World War II.'
+    );
+
 
 -- Content type table
 INSERT INTO

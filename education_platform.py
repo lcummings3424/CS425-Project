@@ -14,6 +14,7 @@ con = psycopg2.connect(
 cursor_obj = con.cursor()
 email = ""
 check_upd1 = False
+descNum = 0
 
 
 class tkinterApp(tk.Tk):
@@ -28,7 +29,15 @@ class tkinterApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Page1, Page2, Page3, Page4):
+        for F in (
+            StartPage,
+            HomePage,
+            ProfilePage,
+            AccountCreationPage,
+            AdminLoginPage,
+            ContentPage,
+            ContentDescPage,
+        ):
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -68,14 +77,14 @@ class StartPage(tk.Frame):
             result = cursor_obj.fetchall()
             result = result[0][0]
             if result == True:
-                self.controller.show_frame(Page1)
+                self.controller.show_frame(HomePage)
             else:
                 messagebox.showerror(
                     "ERROR", "That email and password combination does not exist"
                 )
 
         def create_click():
-            self.controller.show_frame(Page3)
+            self.controller.show_frame(AccountCreationPage)
 
         button = tk.Button(r, text="Login", width=25, command=login_click)
         button.pack()
@@ -86,12 +95,12 @@ class StartPage(tk.Frame):
             r,
             text="Admin Login",
             width=25,
-            command=lambda: controller.show_frame(Page4),
+            command=lambda: controller.show_frame(AdminLoginPage),
         )
         button3.pack()
 
 
-class Page1(tk.Frame):
+class HomePage(tk.Frame):
     def __init__(self, parent, controller):
         self.controller = controller
 
@@ -107,12 +116,16 @@ class Page1(tk.Frame):
         # button2 = ttk.Button(self, text="Back", command=b2_click)
         # button2.pack()
         button1 = ttk.Button(
-            self, text="Profile", command=lambda: controller.show_frame(Page2)
+            self, text="Profile", command=lambda: controller.show_frame(ProfilePage)
         )
         button1.pack()
+        button2 = ttk.Button(
+            self, text="Content", command=lambda: controller.show_frame(ContentPage)
+        )
+        button2.pack()
 
 
-class Page2(tk.Frame):
+class ProfilePage(tk.Frame):
     global email
     global check_upd1
 
@@ -121,7 +134,7 @@ class Page2(tk.Frame):
         self.winfo_toplevel().title("Education Platform")
 
         button1 = ttk.Button(
-            self, text="Back", command=lambda: controller.show_frame(Page1)
+            self, text="Back", command=lambda: controller.show_frame(HomePage)
         )
         button1.pack()
 
@@ -163,7 +176,7 @@ class Page2(tk.Frame):
             label_ph.pack()
 
 
-class Page3(tk.Frame):
+class AccountCreationPage(tk.Frame):
     def __init__(self, parent, controller):
         def create_click():
             maxSql = "SELECT max(user_id)FROM users"
@@ -176,10 +189,16 @@ class Page3(tk.Frame):
             mn = entry4.get()
             ln = entry5.get()
             ph = entry6.get()
-            insertSQL = f"""INSERT INTO users 
-                            (user_id,first_name,middle_name,last_name,email,hashed_password,phone) 
-                            VALUES
-                            ({ID},'{fn}','{mn}','{ln}','{email}','{pw}',{ph})"""
+            if mn != "":
+                insertSQL = f"""INSERT INTO users 
+                                (user_id,first_name,middle_name,last_name,email,hashed_password,phone) 
+                                VALUES
+                                ({ID},'{fn}','{mn}','{ln}','{email}','{pw}',{ph})"""
+            else:
+                insertSQL = f"""INSERT INTO users 
+                                (user_id,first_name,last_name,email,hashed_password,phone) 
+                                VALUES
+                                ({ID},'{fn}','{ln}','{email}','{pw}',{ph})"""
             cursor_obj.execute(insertSQL)
             con.commit()
             messagebox.showinfo("Notice", "Account has been successfully created")
@@ -205,7 +224,7 @@ class Page3(tk.Frame):
         label = ttk.Label(self, text="First name: ")
         label.pack(side="top")
         entry3.pack(pady=10, side="top")
-        label = ttk.Label(self, text="Middle name: ")
+        label = ttk.Label(self, text="Middle name (optional): ")
         label.pack(side="top")
         entry4.pack(pady=10, side="top")
         label = ttk.Label(self, text="Last name: ")
@@ -218,7 +237,7 @@ class Page3(tk.Frame):
         button2.pack()
 
 
-class Page4(tk.Frame):
+class AdminLoginPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         r = self
@@ -248,20 +267,94 @@ class Page4(tk.Frame):
             result = cursor_obj.fetchall()
             result = result[0][0]
             if result == True:
-                self.controller.show_frame(Page1)
+                self.controller.show_frame(HomePage)
             else:
                 messagebox.showerror(
                     "ERROR", "That email and password combination does not exist"
                 )
 
         def create_click():
-            self.controller.show_frame(Page3)
+            self.controller.show_frame(AccountCreationPage)
 
         button = tk.Button(r, text="Login", width=25, command=login_click)
         button.pack()
 
         button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
         # button2.pack()
+
+
+class ContentPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        sql = """
+            SELECT *
+            FROM contents JOIN content_type
+            ON contents.content_id = content_type.content_id
+            JOIN content_type_details ON content_type.content_type_id = content_type_details.content_type_id
+        """
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()
+        # print(result)
+        self.button = []
+        for i in range(result.__len__()):
+            name = result[i][1]
+            mt = result[i][5]
+            ct = result[i][7]
+            label = ttk.Label(self, text=f"Media Type: {mt}")
+            label.pack()
+            label = ttk.Label(self, text=f"Content Type: {ct}")
+            label.pack()
+            self.button.append(
+                tk.Button(self, text=f"{name}", command=lambda i=i: self.open_this(i))
+            )
+            self.button[i].pack()
+
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            self.controller.show_frame(HomePage)
+
+        button = tk.Button(self, text="Back", width=25, command=back_click)
+        button.pack()
+
+    def open_this(self, myNum):
+        # print(myNum)
+        global descNum
+        descNum = myNum + 1
+        self.controller.show_frame(ContentDescPage)
+
+class ContentDescPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        global descNum
+
+    def update(self):
+        global descNum
+        sql = f"""
+        SELECT *
+        FROM contents
+        WHERE content_id = {descNum}"""
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()[0]
+        title = result[1]
+        desc = result[2]
+        label1 = ttk.Label(self, text=f"Title: {title}",wraplength=300)
+        label1.pack()
+        label2 = ttk.Label(self, text=f"Description: {desc}",wraplength=300)
+        label2.pack()
+        r = self
+
+        def back_click():
+            label1.destroy()
+            label2.destroy()
+            button.destroy()
+            self.controller.show_frame(ContentPage)
+
+        button = tk.Button(r, text="Back", width=25, command=back_click)
+        button.pack()
 
 
 app = tkinterApp()
