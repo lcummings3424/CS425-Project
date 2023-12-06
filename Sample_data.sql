@@ -123,6 +123,21 @@ VALUES
         5,
         'World War II',
         'Uncover the pivotal historical events and profound impact of World War II in this compelling module. Explore the causes and consequences of one of the most significant conflicts in human history, from the rise of totalitarian regimes to the Allied victory and the post-war geopolitical landscape. This course delves into the military strategies, key battles, and the human stories that shaped the course of the war. Gain a nuanced understanding of the social, economic, and political ramifications of World War II, and appreciate how it continues to influence the world today. Whether you are a history enthusiast or simply curious about the past, this module provides a comprehensive and insightful exploration of World War II.'
+    ),
+    (
+        6,
+        'Data Structures and Algorithms',
+        'Master the fundamentals of data structures and algorithms in this comprehensive course. Learn key concepts such as arrays, linked lists, trees, and sorting algorithms. Gain the skills to analyze the efficiency of algorithms and solve complex problems. Whether you are a beginner or an experienced programmer, this module provides valuable insights into the world of data structures and algorithms.'
+    ),
+    (
+        7,
+        'Web Development Basics',
+        'Explore the foundations of web development with this introductory course. Cover essential topics such as HTML, CSS, and JavaScript to build interactive and responsive websites. Get hands-on experience in creating web pages and learn best practices for designing user-friendly interfaces. Whether you aspire to be a front-end developer or want to understand the basics of web technologies, this module is a great starting point.'
+    ),
+    (
+        8,
+        'Python Programming for Beginners',
+        'Kickstart your journey into the world of programming with Python. This beginner-friendly course covers the basics of Python syntax, data types, and control structures. Learn to write simple scripts and solve problems using Python. Whether you are new to programming or transitioning from another language, this module provides a solid foundation for Python programming.'
     );
 
 -- Content type table
@@ -131,9 +146,12 @@ INSERT INTO
 VALUES
     (1, 1, 'text'),
     (2, 2, 'video'),
-    (3, 5, 'audio'),
+    (3, 3, 'audio'),
     (4, 4, 'text'),
-    (5, 5, 'text');
+    (5, 5, 'text'),
+    (5, 6, 'text'),
+    (1, 7, 'text'),
+    (1, 8, 'text');
 
 -- Content focus table
 INSERT INTO
@@ -143,7 +161,10 @@ VALUES
     ('Science', 2),
     ('Art', 3),
     ('Health', 4),
-    ('History', 5);
+    ('History', 5),
+    ('Programming', 6),
+    ('Programming', 7),
+    ('Programming', 8);
 
 -- Quizzes Table
 INSERT INTO
@@ -813,4 +834,28 @@ VALUES
         '08:00:00',
         3333333333,
         12345
+    ),
+    (
+        7,
+        'Admin',
+        NULL,
+        'Smith',
+        'admin2@email.com',
+        'hashedadminpass2',
+        '2023-06-15',
+        '10:30:00',
+        4444444444,
+        67890
+    ),
+    (
+        8,
+        'Admin',
+        'M',
+        'Jones',
+        'admin3@email.com',
+        'hashedadminpass3',
+        '2023-07-01',
+        '12:45:00',
+        5555555555,
+        13579
     );

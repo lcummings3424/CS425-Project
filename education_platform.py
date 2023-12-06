@@ -402,7 +402,36 @@ class AOFInfo(tk.Frame):
             # label1.destroy()
             # label2.destroy()
             # button.destroy()
-            self.controller.show_frame(ContentPage)
+            # self.controller.show_frame(ContentPage)
+            query = """
+                SELECT area_name, COUNT(content_id) AS ct
+                FROM content_focus 
+                GROUP BY area_name
+            """
+            cursor_obj.execute(query)
+            result = cursor_obj.fetchall()
+            query2 = f"""
+            select max(ct)
+            from ({query})
+            """
+            cursor_obj.execute(query2)
+            max = cursor_obj.fetchall()[0][0]
+            query3 = f"""
+            select area_name 
+            from ({query})
+            where ct = {max}
+            """
+            cursor_obj.execute(query3)
+            result2 = cursor_obj.fetchall()
+            str = ""
+            for i in range(result.__len__()):
+                str = (
+                    str + f"\nArea Name: {result[i][0]}\nContent count: {result[i][1]}"
+                )
+            str = str + f"\nArea(s) with the max number of content: "
+            for i in range(result2.__len__()):
+                str = str + f"\n{result2[i][0]},"
+            messagebox.showinfo("Notice", f"Content per area of focus: {str}")
 
         button = tk.Button(self, text="Back", width=25, command=back_click)
         button.pack()
