@@ -38,6 +38,10 @@ class tkinterApp(tk.Tk):
             ContentPage,
             ContentDescPage,
             AOFInfo,
+            QuizHomePage,
+            QuizTakenPage,
+            QuizNotTakenPage,
+            TakeQuizPage,
         ):
             frame = F(container, self)
 
@@ -122,6 +126,10 @@ class HomePage(tk.Frame):
         button1.pack()
         button2 = ttk.Button(
             self, text="Content", command=lambda: controller.show_frame(ContentPage)
+        )
+        button2.pack()
+        button2 = ttk.Button(
+            self, text="Quizzes", command=lambda: controller.show_frame(QuizHomePage)
         )
         button2.pack()
 
@@ -440,7 +448,47 @@ class AOFInfo(tk.Frame):
         button1.pack()
 
 
+class QuizHomePage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        button1 = ttk.Button(
+            self, text="Taken", command=lambda: controller.show_frame(QuizTakenPage)
+        )
+        button1.pack()
+        button2 = ttk.Button(
+            self,
+            text="Not Taken",
+            command=lambda: controller.show_frame(QuizNotTakenPage),
+        )
+        button2.pack()
+        button2 = ttk.Button(
+            self,
+            text="Take a Quiz",
+            command=lambda: controller.show_frame(TakeQuizPage),
+        )
+        button2.pack()
+
+
+class QuizTakenPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+
+class QuizNotTakenPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+
+class TakeQuizPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
 app = tkinterApp()
 app.title = "Education Platform"
-app.geometry("1280x720")
+app.geometry("1920x1080")
+app.state("zoomed")
 app.mainloop()

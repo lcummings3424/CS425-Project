@@ -144,14 +144,14 @@ VALUES
 INSERT INTO
     content_type (content_type_id, content_id, media_type)
 VALUES
-    (1, 1, 'text'),
-    (2, 2, 'video'),
-    (3, 3, 'audio'),
-    (4, 4, 'text'),
-    (5, 5, 'text'),
-    (5, 6, 'text'),
-    (1, 7, 'text'),
-    (1, 8, 'text');
+    (1, 1, 'Text'),
+    (2, 2, 'Video'),
+    (1, 3, 'Audio'),
+    (4, 4, 'Text'),
+    (5, 5, 'Text'),
+    (5, 6, 'Text'),
+    (1, 7, 'Text'),
+    (1, 8, 'Text');
 
 -- Content focus table
 INSERT INTO
