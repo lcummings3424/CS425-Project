@@ -837,7 +837,7 @@ VALUES
     ),
     (
         7,
-        'Admin',
+        'Admin1',
         NULL,
         'Smith',
         'admin2@email.com',
@@ -849,7 +849,7 @@ VALUES
     ),
     (
         8,
-        'Admin',
+        'Admin2',
         'M',
         'Jones',
         'admin3@email.com',

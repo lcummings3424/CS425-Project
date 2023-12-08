@@ -15,6 +15,7 @@ cursor_obj = con.cursor()
 email = ""
 check_upd1 = False
 descNum = 0
+userID = 0
 
 
 class tkinterApp(tk.Tk):
@@ -73,6 +74,7 @@ class StartPage(tk.Frame):
         entry2.pack(pady=10, side="top")
 
         def login_click():
+            global userID
             username = entry1.get()
             password = entry2.get()
             global email
@@ -149,12 +151,14 @@ class ProfilePage(tk.Frame):
 
     def update(self):
         global check_upd1
+        global userID
         if not check_upd1:
             check_upd1 = True
             sql = f"SELECT * FROM users WHERE email = '{email}';"
             cursor_obj.execute(sql)
             result = cursor_obj.fetchall()
             id = result[0][0]
+            userID = id
             first = result[0][1]
             middle = result[0][2]
             last = result[0][3]
@@ -436,10 +440,10 @@ class AOFInfo(tk.Frame):
                 str = (
                     str + f"\nArea Name: {result[i][0]}\nContent count: {result[i][1]}"
                 )
-            str = str + f"\nArea(s) with the max number of content: "
+            str = str + f"\n\nArea(s) with the max number of content: "
             for i in range(result2.__len__()):
                 str = str + f"\n{result2[i][0]},"
-            messagebox.showinfo("Notice", f"Content per area of focus: {str}")
+            messagebox.showinfo("Notice", f"Content per area of focus: \n{str}")
 
         button = tk.Button(self, text="Back", width=25, command=back_click)
         button.pack()
@@ -468,6 +472,10 @@ class QuizHomePage(tk.Frame):
             command=lambda: controller.show_frame(TakeQuizPage),
         )
         button2.pack()
+        button3 = ttk.Button(
+            self, text="Back", command=lambda: controller.show_frame(HomePage)
+        )
+        button3.pack()
 
 
 class QuizTakenPage(tk.Frame):
@@ -475,17 +483,132 @@ class QuizTakenPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in QuizTakenPage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            button3 = ttk.Button(self, text="Back", command=back_click)
+            button3.pack()
+            self.controller.show_frame(QuizHomePage)
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
+
+    def update(self):
+        sql2 = f"SELECT * FROM users WHERE email = '{email}';"
+        cursor_obj.execute(sql2)
+        result2 = cursor_obj.fetchall()
+        id = result2[0][0]
+        global userID
+        userID = id
+        sql = f"""
+        select quiz_id, score, letter_grade 
+        from taken
+        where user_id = '{userID}'
+        """
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()
+        for i in range(result.__len__()):
+            temp = result[i]
+            label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
+            label.pack()
+            label = ttk.Label(self, text=f"Score: {temp[1]}")
+            label.pack()
+            label = ttk.Label(self, text=f"Letter Grade: {temp[2]}")
+            label.pack()
+            sql3 = f"""
+            select passing_score 
+            from quizzes 
+            where quiz_id = {temp[0]}
+            """
+            cursor_obj.execute(sql3)
+            res3 = cursor_obj.fetchall()
+            temp2 = res3[0][0]
+            if temp[1] < temp2:
+                label = ttk.Label(self, text=f"Passed: No")
+                label.pack()
+            else:
+                label = ttk.Label(self, text=f"Passed: Yes")
+                label.pack()
+
 
 class QuizNotTakenPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in QuizTakenPage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            button3 = ttk.Button(self, text="Back", command=back_click)
+            button3.pack()
+            self.controller.show_frame(QuizHomePage)
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
+
+    def update(self):
+        sql2 = f"SELECT * FROM users WHERE email = '{email}';"
+        cursor_obj.execute(sql2)
+        result2 = cursor_obj.fetchall()
+        id = result2[0][0]
+        global userID
+        userID = id
+        sql0 = f"""
+        select quiz_id
+        from taken
+        where user_id = '{userID}'
+        """
+        sql = f"""
+        select quiz_id
+        from quizzes
+        where quizzes.quiz_id not in ({sql0})
+        """
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()
+        for i in range(result.__len__()):
+            temp = result[i]
+            label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
+            label.pack()
+            # label = ttk.Label(self, text=f"Score: {temp[1]}")
+            # label.pack()
+            # label = ttk.Label(self, text=f"Letter Grade: {temp[1]}")
+            # label.pack()
+            sql3 = f"""
+            select passing_score 
+            from quizzes 
+            where quiz_id = {temp[0]}
+            """
+            cursor_obj.execute(sql3)
+            res3 = cursor_obj.fetchall()
+            label = ttk.Label(self, text=f"Passing score: {res3[0][0]}")
+            label.pack()
+            # temp2 = res3[0][0]
+            # if temp[1] < temp2:
+            #     label = ttk.Label(self, text=f"Passed: No")
+            #     label.pack()
+            # else:
+            #     label = ttk.Label(self, text=f"Passed: Yes")
+            #     label.pack()
+
 
 class TakeQuizPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
+        button3 = ttk.Button(
+            self, text="Back", command=lambda: controller.show_frame(QuizHomePage)
+        )
+        button3.pack()
+
 
 app = tkinterApp()
 app.title = "Education Platform"
