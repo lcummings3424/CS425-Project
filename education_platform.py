@@ -16,6 +16,7 @@ email = ""
 check_upd1 = False
 descNum = 0
 userID = 0
+quizNum = 0
 
 
 class tkinterApp(tk.Tk):
@@ -43,6 +44,7 @@ class tkinterApp(tk.Tk):
             QuizTakenPage,
             QuizNotTakenPage,
             TakeQuizPage,
+            TakeQuiz,
         ):
             frame = F(container, self)
 
@@ -604,9 +606,165 @@ class TakeQuizPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        button3 = ttk.Button(
-            self, text="Back", command=lambda: controller.show_frame(QuizHomePage)
-        )
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in QuizTakenPage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            button3 = ttk.Button(self, text="Back", command=back_click)
+            button3.pack()
+            self.controller.show_frame(QuizHomePage)
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
+
+    def update(self):
+        sql2 = f"SELECT * FROM users WHERE email = '{email}';"
+        cursor_obj.execute(sql2)
+        result2 = cursor_obj.fetchall()
+        id = result2[0][0]
+        global userID
+        userID = id
+        sql = f"""
+        select quiz_id
+        from quizzes
+        """
+        cursor_obj.execute(sql)
+        result = cursor_obj.fetchall()
+        self.button = []
+        for i in range(result.__len__()):
+            temp = result[i]
+            # label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
+            # label.pack()
+            # label = ttk.Label(self, text=f"Score: {temp[1]}")
+            # label.pack()
+            # label = ttk.Label(self, text=f"Letter Grade: {temp[1]}")
+            # label.pack()
+            sql3 = f"""
+            select passing_score, quiz_type, time_limit
+            from quizzes 
+            where quiz_id = {temp[0]}
+            """
+            cursor_obj.execute(sql3)
+            res3 = cursor_obj.fetchall()
+            self.button.append(
+                tk.Button(
+                    self, text=f"Quiz {temp[0]}", command=lambda i=i: self.open_this(i)
+                )
+            )
+            self.button[i].pack()
+            label = ttk.Label(self, text=f"Passing score: {res3[0][0]}")
+            label.pack()
+            label = ttk.Label(self, text=f"Quiz type: {res3[0][1]}")
+            label.pack()
+            label = ttk.Label(self, text=f"Time limit: {res3[0][2]} seconds")
+            label.pack()
+            # temp2 = res3[0][0]
+            # if temp[1] < temp2:
+            #     label = ttk.Label(self, text=f"Passed: No")
+            #     label.pack()
+            # else:
+            #     label = ttk.Label(self, text=f"Passed: Yes")
+            #     label.pack()
+
+    def open_this(self, myNum):
+        # print(myNum)
+        global quizNum
+        quizNum = myNum + 1
+        self.controller.show_frame(TakeQuiz)
+
+
+class TakeQuiz(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+    def update(self):
+        answers = [0] * 10
+        correctAnswers = [0] * 10
+
+        def answerSelect(num, ans):
+            answers[num] = ans
+            print(answers)
+
+        self.button = []
+
+        global quizNum
+        sql = f"""
+        select question_id
+        from has_questions 
+        where quiz_id = {quizNum}
+        """
+        cursor_obj.execute(sql)
+        res = cursor_obj.fetchall()
+        count = 0
+        for i in range(res.__len__()):
+            quID = res[i][0]
+            sql2 = f"""
+            select *
+            from questions 
+            where question_id = {quID}
+            """
+            cursor_obj.execute(sql2)
+            res2 = cursor_obj.fetchall()
+            label = ttk.Label(self, text=f"Number {i+1}: {res2[0][1]}")
+            label.pack()
+            correctAnswers[i] = res2[0][5]
+            # label = ttk.Label(self, text=f"A: {res2[0][2]}")
+            # label.pack()
+            # label = ttk.Label(self, text=f"B: {res2[0][3]}")
+            # label.pack()
+            # label = ttk.Label(self, text=f"C: {res2[0][4]}")
+            # label.pack()
+            self.button.append(
+                tk.Button(
+                    self, text=f"{res2[0][2]}", command=lambda i=i: answerSelect(i, "A")
+                )
+            )
+            self.button[count].pack()
+            count = count + 1
+            self.button.append(
+                tk.Button(
+                    self, text=f"{res2[0][3]}", command=lambda i=i: answerSelect(i, "B")
+                )
+            )
+            self.button[count].pack()
+            count = count + 1
+            self.button.append(
+                tk.Button(
+                    self, text=f"{res2[0][4]}", command=lambda i=i: answerSelect(i, "C")
+                )
+            )
+            self.button[count].pack()
+            count = count + 1
+
+        def submit():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            finished = False
+            score = 0
+            for i in answers:
+                if i == 0:
+                    finished = False
+                else:
+                    finished = True
+            if finished == False:
+                messagebox.showerror("ERROR", "Quiz is not finished")
+            else:
+                for i in range(answers.__len__()):
+                    if answers[i] == correctAnswers[i]:
+                        score = score + 10
+                messagebox.showinfo("Results", f"Score: {score}")
+            if finished:
+                for widget in QuizTakenPage.winfo_children(self):
+                    widget.destroy()
+                # QuizHomePage.pack_forget()
+                self.controller.show_frame(QuizHomePage)
+
+        button3 = ttk.Button(self, text="Submit", command=submit)
         button3.pack()
 
 
