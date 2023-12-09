@@ -1,5 +1,6 @@
 import psycopg2
 import tkinter as tk
+import copy
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import Label, StringVar
@@ -20,6 +21,7 @@ check_upd1 = False
 descNum = 0
 userID = 0
 quizNum = 0
+flashCardSetNum = 0
 
 
 class tkinterApp(tk.Tk):
@@ -48,6 +50,8 @@ class tkinterApp(tk.Tk):
             QuizNotTakenPage,
             TakeQuizPage,
             TakeQuiz,
+            FlashcardHomePage,
+            FlashcardPage,
         ):
             frame = F(container, self)
 
@@ -135,10 +139,16 @@ class HomePage(tk.Frame):
             self, text="Content", command=lambda: controller.show_frame(ContentPage)
         )
         button2.pack()
-        button2 = ttk.Button(
+        button3 = ttk.Button(
             self, text="Quizzes", command=lambda: controller.show_frame(QuizHomePage)
         )
-        button2.pack()
+        button3.pack()
+        button4 = ttk.Button(
+            self,
+            text="Flashcards",
+            command=lambda: controller.show_frame(FlashcardHomePage),
+        )
+        button4.pack()
 
 
 class ProfilePage(tk.Frame):
@@ -820,6 +830,89 @@ class TakeQuiz(tk.Frame):
 
         button3 = ttk.Button(self, text="Submit", command=submit)
         button3.pack()
+
+
+class FlashcardHomePage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        sql = """
+        select *
+        from flashcards
+        """
+        cursor_obj.execute(sql)
+        res = cursor_obj.fetchall()
+        self.button = []
+        count = 1
+        for i in range(len(res)):
+            # p1 = copy.deepcopy(count) + 1
+            if i == 0:
+                self.button.append(
+                    tk.Button(
+                        self,
+                        text=f"Flashcard Set {i + 1}",
+                        command=lambda i=i: self.open_this(copy.deepcopy(i)),
+                    )
+                )
+                self.button[i].pack()
+            elif (i + 1) % 5 == 0:
+                tx = i - ((5 * count) - 3)
+                butt = i - ((5 * count) - 2)
+                self.button.append(
+                    tk.Button(
+                        self,
+                        text=f"Flashcard Set {tx}",
+                        command=lambda i=i: self.open_this(butt),
+                    )
+                )
+                self.button[i - ((5 * count) - 2)].pack()
+                count = count + 1
+            # count = count + 1
+
+    def open_this(self, myNum):
+        # print(myNum)
+        global flashCardSetNum
+        flashCardSetNum = myNum
+        self.controller.show_frame(FlashcardPage)
+
+
+class FlashcardPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        global flashCardSetNum
+
+    def update(self):
+        global flashCardSetNum
+        one = (flashCardSetNum) * 5
+        two = (flashCardSetNum + 1) * 5
+        sql = f"""
+        select * 
+        from flashcards 
+        where flashcard_id > {one-1} and flashcard_id < {two+1}
+        """
+        cursor_obj.execute(sql)
+        res = cursor_obj.fetchall()
+        self.button = []
+
+        def open_this(num):
+            messagebox.showinfo(
+                "Answer", f"Answer: {res[num][2]}\nExplanation: {res[num][3]}"
+            )
+
+        for i in range(len(res)):
+            label = ttk.Label(self, text=f"Flashcard {res[i][0]}: ", padding=(0, 15))
+            label.pack()
+            label = ttk.Label(self, text=f"Question: {res[i][1]}")
+            label.pack()
+            self.button.append(
+                tk.Button(
+                    self,
+                    text=f"Answer",
+                    command=lambda i=i: open_this(i),
+                )
+            )
+            self.button[i].pack()
 
 
 app = tkinterApp()
