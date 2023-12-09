@@ -687,7 +687,7 @@ class TakeQuiz(tk.Frame):
 
         def answerSelect(num, ans):
             answers[num] = ans
-            print(answers)
+            # print(answers)
 
         self.button = []
 
@@ -746,6 +746,14 @@ class TakeQuiz(tk.Frame):
             # button.destroy()
             finished = False
             score = 0
+            sql3 = f"""
+            select passing_score 
+            from quizzes 
+            where quiz_id = {quizNum}
+            """
+            cursor_obj.execute(sql3)
+            res3 = cursor_obj.fetchall()
+            passing = res3[0][0]
             for i in answers:
                 if i == 0:
                     finished = False
@@ -757,7 +765,10 @@ class TakeQuiz(tk.Frame):
                 for i in range(answers.__len__()):
                     if answers[i] == correctAnswers[i]:
                         score = score + 10
-                messagebox.showinfo("Results", f"Score: {score}")
+                if score < passing:
+                    messagebox.showinfo("Results", f"Score: {score}\nPassed: No")
+                else:
+                    messagebox.showinfo("Results", f"Score: {score}\nPassed: Yes")
             if finished:
                 for widget in QuizTakenPage.winfo_children(self):
                     widget.destroy()
