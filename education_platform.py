@@ -606,20 +606,6 @@ class TakeQuizPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        def back_click():
-            # label1.destroy()
-            # label2.destroy()
-            # button.destroy()
-            for widget in QuizTakenPage.winfo_children(self):
-                widget.destroy()
-            # QuizHomePage.pack_forget()
-            button3 = ttk.Button(self, text="Back", command=back_click)
-            button3.pack()
-            self.controller.show_frame(QuizHomePage)
-
-        button3 = ttk.Button(self, text="Back", command=back_click)
-        button3.pack()
-
     def update(self):
         sql2 = f"SELECT * FROM users WHERE email = '{email}';"
         cursor_obj.execute(sql2)
@@ -669,10 +655,24 @@ class TakeQuizPage(tk.Frame):
             #     label = ttk.Label(self, text=f"Passed: Yes")
             #     label.pack()
 
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in QuizTakenPage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            self.controller.show_frame(QuizHomePage)
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
+
     def open_this(self, myNum):
         # print(myNum)
         global quizNum
         quizNum = myNum + 1
+        for widget in QuizTakenPage.winfo_children(self):
+            widget.destroy()
         self.controller.show_frame(TakeQuiz)
 
 
@@ -769,11 +769,51 @@ class TakeQuiz(tk.Frame):
                     messagebox.showinfo("Results", f"Score: {score}\nPassed: No")
                 else:
                     messagebox.showinfo("Results", f"Score: {score}\nPassed: Yes")
+            sql4 = f"SELECT * FROM users WHERE email = '{email}';"
+            cursor_obj.execute(sql4)
+            result2 = cursor_obj.fetchall()
+            id = result2[0][0]
+            global userID
+            userID = id
+            sql5 = f"""
+            select quiz_id, score, letter_grade 
+            from taken
+            where user_id = '{userID}'
+            """
+            check = f"SELECT EXISTS({sql5})"
+            cursor_obj.execute(check)
+            taken = cursor_obj.fetchall()[0][0]
             if finished:
+                letter = "F"
+                if score <= 100:
+                    letter = "A"
+                if score <= 89:
+                    letter = "B"
+                if score <= 79:
+                    letter = "C"
+                if score <= 69:
+                    letter = "D"
+                if score <= 59:
+                    letter = "F"
+                if taken:
+                    updateSQL = f"""
+                    update taken
+                    set score = {score},letter_grade = '{letter}'
+                    where user_id = {userID} and quiz_id = {quizNum}
+                    """
+                    cursor_obj.execute(updateSQL)
+                    con.commit()
+                else:
+                    insertSQL = f"""
+                    insert into taken(user_id,quiz_id,score,letter_grade)
+                    values({userID},{quizNum},{score},'{letter}')
+                    """
+                    cursor_obj.execute(insertSQL)
+                    con.commit()
                 for widget in QuizTakenPage.winfo_children(self):
                     widget.destroy()
                 # QuizHomePage.pack_forget()
-                self.controller.show_frame(QuizHomePage)
+                self.controller.show_frame(TakeQuizPage)
 
         button3 = ttk.Button(self, text="Submit", command=submit)
         button3.pack()
