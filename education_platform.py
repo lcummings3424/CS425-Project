@@ -406,7 +406,7 @@ class ContentPage(tk.Frame):
             label = ttk.Label(self, text=f"Content Type: {ct}")
             label.pack()
             label = ttk.Label(self, text=f"Content Type Description: {result[i][8]}")
-            label.pack()            
+            label.pack()
             label = ttk.Label(self, text=f"Area Of Focus: {af}")
             label.pack()
             self.button.append(
