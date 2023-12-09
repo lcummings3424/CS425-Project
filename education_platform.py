@@ -254,7 +254,7 @@ class ProfilePage(tk.Frame):
                 temp = res3[i]
                 uID = temp[0]
                 ct = temp[1]
-                str = str + f"User ID: {uID} has referred {ct} other users\n"
+                str = str + f"User ID {uID} has referred {ct} other users\n"
             # print()
             messagebox.showinfo("User Stats", str)
 
@@ -405,6 +405,8 @@ class ContentPage(tk.Frame):
             label.pack()
             label = ttk.Label(self, text=f"Content Type: {ct}")
             label.pack()
+            label = ttk.Label(self, text=f"Content Type Description: {result[i][8]}")
+            label.pack()            
             label = ttk.Label(self, text=f"Area Of Focus: {af}")
             label.pack()
             self.button.append(
@@ -930,7 +932,12 @@ class FlashcardHomePage(tk.Frame):
         self.controller = controller
         sql = """
         select *
-        from flashcards
+        from flashcards join flashcard_content_type
+        on flashcards.flashcard_id = flashcard_content_type.flashcard_id
+        join content_type
+        on flashcard_content_type.content_type_id = content_type.content_type_id
+        join content_type_details
+        on flashcard_content_type.content_type_id = content_type_details.content_type_id        
         """
         cursor_obj.execute(sql)
         res = cursor_obj.fetchall()
@@ -958,6 +965,10 @@ class FlashcardHomePage(tk.Frame):
                     )
                 )
                 self.button[butt].pack()
+                label = tk.Label(self, text=f"Flashcard Media Type: {res[i][8]}")
+                label.pack()
+                label = tk.Label(self, text=f"Flashcard Content Type: {res[i][10]}")
+                label.pack()
                 count = count + 1
             # count = count + 1
 
@@ -994,8 +1005,9 @@ class FlashcardPage(tk.Frame):
         two = (flashCardSetNum + 1) * 5
         sql = f"""
         select * 
-        from flashcards 
-        where flashcard_id > {one-1} and flashcard_id < {two+1}
+        from flashcards join flashcard_content_type
+        on flashcards.flashcard_id = flashcard_content_type.flashcard_id
+        where flashcards.flashcard_id > {one-1} and flashcards.flashcard_id < {two+1}
         """
         cursor_obj.execute(sql)
         res = cursor_obj.fetchall()
@@ -1008,6 +1020,8 @@ class FlashcardPage(tk.Frame):
 
         for i in range(len(res)):
             label = ttk.Label(self, text=f"Flashcard {res[i][0]}: ", padding=(0, 15))
+            label.pack()
+            label = ttk.Label(self, text=f"Flashcard Content Type:  {res[i][0]}: ")
             label.pack()
             label = ttk.Label(self, text=f"Question: {res[i][1]}")
             label.pack()
