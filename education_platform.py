@@ -943,6 +943,6 @@ class FlashcardPage(tk.Frame):
 
 app = tkinterApp()
 app.title = "Education Platform"
-app.geometry("1920x1080")
+# app.geometry("1920x1080")
 app.state("zoomed")
 app.mainloop()
