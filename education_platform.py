@@ -202,6 +202,27 @@ class ProfilePage(tk.Frame):
             label_jd.pack()
             label_jt.pack()
             label_ph.pack()
+            sql2 = f"""
+            select * 
+            from referred join users
+            on referred.user_id = users.user_id
+            where referred.user_id = {id}
+            """
+            cursor_obj.execute(sql2)
+            res = cursor_obj.fetchall()
+            if len(res) != 0:
+                refID = res[0][1]
+                sql3 = f"""
+                select first_name, last_name
+                from users 
+                where user_id = {refID}
+                """
+                cursor_obj.execute(sql3)
+                res2 = cursor_obj.fetchall()
+                label = ttk.Label(self, text=f"Referred by: {res2[0][0]} {res2[0][1]}")
+                label.pack()
+            else:
+                label = ttk.Label(self, text=f"Referred by: N")
 
 
 class AccountCreationPage(tk.Frame):
