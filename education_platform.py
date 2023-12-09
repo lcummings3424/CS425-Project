@@ -1004,9 +1004,11 @@ class FlashcardPage(tk.Frame):
         one = (flashCardSetNum) * 5
         two = (flashCardSetNum + 1) * 5
         sql = f"""
-        select * 
+        select flashcards.flashcard_id,flashcards.question,flashcards.answer,flashcards.answer_explanation,content_type_details.content_type_title
         from flashcards join flashcard_content_type
         on flashcards.flashcard_id = flashcard_content_type.flashcard_id
+        join content_type_details
+        on flashcard_content_type.content_type_id = content_type_details.content_type_id
         where flashcards.flashcard_id > {one-1} and flashcards.flashcard_id < {two+1}
         """
         cursor_obj.execute(sql)
@@ -1021,7 +1023,7 @@ class FlashcardPage(tk.Frame):
         for i in range(len(res)):
             label = ttk.Label(self, text=f"Flashcard {res[i][0]}: ", padding=(0, 15))
             label.pack()
-            label = ttk.Label(self, text=f"Flashcard Content Type:  {res[i][0]}: ")
+            label = ttk.Label(self, text=f"Flashcard Content Type:  {res[i][4]}: ")
             label.pack()
             label = ttk.Label(self, text=f"Question: {res[i][1]}")
             label.pack()
