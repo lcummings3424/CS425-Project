@@ -4,4 +4,4 @@ This project uses [render](https://dashboard.render.com/) to host the database. 
 
 The executable is located in \dist.
 
-The executable should be standalone.
+The executable is standalone.
