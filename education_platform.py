@@ -562,7 +562,7 @@ class QuizTakenPage(tk.Frame):
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
         self.button = []
-
+        qid = 0
         for i in range(len(result)):
             temp = result[i]
             label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
@@ -585,11 +585,12 @@ class QuizTakenPage(tk.Frame):
             else:
                 label = ttk.Label(self, text=f"Passed: Yes")
                 label.pack()
+            qid = copy.deepcopy(temp[0])
             self.button.append(
                 tk.Button(
                     self,
                     text="Delete quiz score",
-                    command=lambda i=i: self.deleteClick(temp[0], userID),
+                    command=lambda i=qid: self.deleteClick(i, userID),
                 )
             )
             self.button[i].pack()
@@ -845,7 +846,7 @@ class TakeQuiz(tk.Frame):
             sql5 = f"""
             select quiz_id, score, letter_grade 
             from taken
-            where user_id = '{userID}'
+            where user_id = '{userID}' and quiz_id = {quizNum}
             """
             check = f"SELECT EXISTS({sql5})"
             cursor_obj.execute(check)
@@ -900,26 +901,26 @@ class FlashcardHomePage(tk.Frame):
         count = 1
         for i in range(len(res)):
             # p1 = copy.deepcopy(count) + 1
-            if i == 0:
-                self.button.append(
-                    tk.Button(
-                        self,
-                        text=f"Flashcard Set {i + 1}",
-                        command=lambda i=i: self.open_this(copy.deepcopy(i)),
-                    )
-                )
-                self.button[i].pack()
-            elif (i + 1) % 5 == 0:
-                tx = i - ((5 * count) - 3)
-                butt = i - ((5 * count) - 2)
+            # if i == 0:
+            #     self.button.append(
+            #         tk.Button(
+            #             self,
+            #             text=f"Flashcard Set {i + 1}",
+            #             command=lambda i=i: self.open_this(copy.deepcopy(i)),
+            #         )
+            #     )
+            #     self.button[i].pack()
+            if (i + 1) % 5 == 0:
+                tx = (i + 1) // 5
+                butt = ((i + 1) // 5) - 1
                 self.button.append(
                     tk.Button(
                         self,
                         text=f"Flashcard Set {tx}",
-                        command=lambda i=i: self.open_this(butt),
+                        command=lambda i=butt: self.open_this(i),
                     )
                 )
-                self.button[i - ((5 * count) - 2)].pack()
+                self.button[butt].pack()
                 count = count + 1
             # count = count + 1
 
