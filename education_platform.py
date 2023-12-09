@@ -559,7 +559,7 @@ class QuizNotTakenPage(tk.Frame):
             # label1.destroy()
             # label2.destroy()
             # button.destroy()
-            for widget in QuizTakenPage.winfo_children(self):
+            for widget in QuizNotTakenPage.winfo_children(self):
                 widget.destroy()
             # QuizHomePage.pack_forget()
             button3 = ttk.Button(self, text="Back", command=back_click)
@@ -672,7 +672,7 @@ class TakeQuizPage(tk.Frame):
             # label1.destroy()
             # label2.destroy()
             # button.destroy()
-            for widget in QuizTakenPage.winfo_children(self):
+            for widget in TakeQuizPage.winfo_children(self):
                 widget.destroy()
             # QuizHomePage.pack_forget()
             self.controller.show_frame(QuizHomePage)
@@ -684,7 +684,7 @@ class TakeQuizPage(tk.Frame):
         # print(myNum)
         global quizNum
         quizNum = myNum + 1
-        for widget in QuizTakenPage.winfo_children(self):
+        for widget in TakeQuizPage.winfo_children(self):
             widget.destroy()
         self.controller.show_frame(TakeQuiz)
 
@@ -823,7 +823,7 @@ class TakeQuiz(tk.Frame):
                     """
                     cursor_obj.execute(insertSQL)
                     con.commit()
-                for widget in QuizTakenPage.winfo_children(self):
+                for widget in TakeQuiz.winfo_children(self):
                     widget.destroy()
                 # QuizHomePage.pack_forget()
                 self.controller.show_frame(TakeQuizPage)
@@ -869,6 +869,20 @@ class FlashcardHomePage(tk.Frame):
                 count = count + 1
             # count = count + 1
 
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in FlashcardHomePage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            self.controller.show_frame(HomePage)
+            button3 = ttk.Button(self, text="Back", command=back_click)
+            button3.pack()
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
+
     def open_this(self, myNum):
         # print(myNum)
         global flashCardSetNum
@@ -913,6 +927,18 @@ class FlashcardPage(tk.Frame):
                 )
             )
             self.button[i].pack()
+
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            for widget in FlashcardPage.winfo_children(self):
+                widget.destroy()
+            # QuizHomePage.pack_forget()
+            self.controller.show_frame(FlashcardHomePage)
+
+        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3.pack()
 
 
 app = tkinterApp()
