@@ -359,7 +359,7 @@ class ContentPage(tk.Frame):
         result = cursor_obj.fetchall()
         # print(result)
         self.button = []
-        for i in range(result.__len__()):
+        for i in range(len(result)):
             name = result[i][1]
             mt = result[i][5]
             ct = result[i][7]
@@ -444,7 +444,7 @@ class AOFInfo(tk.Frame):
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
-        for i in range(result.__len__()):
+        for i in range(len(result)):
             name = result[i][0]
             desc = result[i][1]
             label = ttk.Label(self, text=f"Title: {name}")
@@ -484,12 +484,12 @@ class AOFInfo(tk.Frame):
             cursor_obj.execute(query3)
             result2 = cursor_obj.fetchall()
             str = ""
-            for i in range(result.__len__()):
+            for i in range(len(result)):
                 str = (
                     str + f"\nArea Name: {result[i][0]}\nContent count: {result[i][1]}"
                 )
             str = str + f"\n\nArea(s) with the max number of content: "
-            for i in range(result2.__len__()):
+            for i in range(len(result2)):
                 str = str + f"\n{result2[i][0]},"
             messagebox.showinfo("Notice", f"Content per area of focus: \n{str}")
 
@@ -561,7 +561,9 @@ class QuizTakenPage(tk.Frame):
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
-        for i in range(result.__len__()):
+        self.button = []
+
+        for i in range(len(result)):
             temp = result[i]
             label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
             label.pack()
@@ -583,6 +585,22 @@ class QuizTakenPage(tk.Frame):
             else:
                 label = ttk.Label(self, text=f"Passed: Yes")
                 label.pack()
+            self.button.append(
+                tk.Button(
+                    self,
+                    text="Delete quiz score",
+                    command=lambda i=i: self.deleteClick(temp[0], userID),
+                )
+            )
+            self.button[i].pack()
+
+    def deleteClick(self, qID, uID):
+        delSQL = f"""
+        delete from taken
+        where user_id = {uID} and quiz_id = {qID}
+        """
+        cursor_obj.execute(delSQL)
+        con.commit()
 
 
 class QuizNotTakenPage(tk.Frame):
@@ -624,7 +642,7 @@ class QuizNotTakenPage(tk.Frame):
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
-        for i in range(result.__len__()):
+        for i in range(len(result)):
             temp = result[i]
             label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
             label.pack()
@@ -669,7 +687,7 @@ class TakeQuizPage(tk.Frame):
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
         self.button = []
-        for i in range(result.__len__()):
+        for i in range(len(result)):
             temp = result[i]
             # label = ttk.Label(self, text=f"Quiz ID: {temp[0]}", padding=(0, 15))
             # label.pack()
@@ -749,7 +767,7 @@ class TakeQuiz(tk.Frame):
         cursor_obj.execute(sql)
         res = cursor_obj.fetchall()
         count = 0
-        for i in range(res.__len__()):
+        for i in range(len(res)):
             quID = res[i][0]
             sql2 = f"""
             select *
@@ -811,7 +829,7 @@ class TakeQuiz(tk.Frame):
             if finished == False:
                 messagebox.showerror("ERROR", "Quiz is not finished")
             else:
-                for i in range(answers.__len__()):
+                for i in range(len(answers)):
                     if answers[i] == correctAnswers[i]:
                         score = score + 10
                 if score < passing:
