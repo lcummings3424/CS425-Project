@@ -782,6 +782,36 @@ VALUES
         'What is an index in a database?',
         'Improves the speed of data retrieval operations on a database table',
         'An index in a database is a data structure that improves the speed of data retrieval operations on a database table.'
+    ),
+    (
+        11,
+        'What is the purpose of the GROUP BY clause in SQL?',
+        'Groups rows that have the same values in specified columns',
+        'The GROUP BY clause in SQL is used to group rows that have the same values in specified columns, often used with aggregate functions like COUNT, SUM, AVG, etc.'
+    ),
+    (
+        12,
+        'Explain the concept of a foreign key in a relational database.',
+        'A field that refers to the primary key in another table, establishing a link between the two tables',
+        'A foreign key in a relational database is a field that refers to the primary key in another table, establishing a link between the two tables and enforcing referential integrity.'
+    ),
+    (
+        13,
+        'What is a stored procedure in PostgreSQL?',
+        'A precompiled collection of one or more SQL statements that can be executed with a single call',
+        'A stored procedure in PostgreSQL is a precompiled collection of one or more SQL statements that can be executed with a single call. It is often used for code modularity and reusability.'
+    ),
+    (
+        14,
+        'How can you prevent SQL injection attacks?',
+        'Use parameterized queries or prepared statements',
+        'To prevent SQL injection attacks, it is essential to use parameterized queries or prepared statements, which ensure that user input is treated as data and not executable code.'
+    ),
+    (
+        15,
+        'Explain the ACID properties in the context of database transactions.',
+        'Atomicity, Consistency, Isolation, Durability',
+        'ACID stands for Atomicity, Consistency, Isolation, and Durability—properties that ensure reliable and secure database transactions. Atomicity ensures that transactions are treated as a single, indivisible unit; Consistency ensures that the database remains in a valid state before and after the transaction; Isolation ensures that transactions are executed independently of each other; Durability ensures that once a transaction is committed, its effects are permanent.'
     );
 
 -- Flashcard content type table
