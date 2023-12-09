@@ -322,14 +322,26 @@ class AdminLoginPage(tk.Frame):
                     "ERROR", "That email and password combination does not exist"
                 )
 
-        def create_click():
-            self.controller.show_frame(AccountCreationPage)
+        # def create_click():
+        #     self.controller.show_frame(AccountCreationPage)
 
         button = tk.Button(r, text="Login", width=25, command=login_click)
         button.pack()
 
-        button2 = tk.Button(r, text="Create Account", width=25, command=create_click)
-        # button2.pack()
+        def back_click():
+            # label1.destroy()
+            # label2.destroy()
+            # button.destroy()
+            self.controller.show_frame(StartPage)
+
+        # def AOFClick():
+        #     # label1.destroy()
+        #     # label2.destroy()
+        #     # button.destroy()
+        #     self.controller.show_frame(AOFInfo)
+
+        button3 = tk.Button(self, text="Back", width=25, command=back_click)
+        button3.pack()
 
 
 class ContentPage(tk.Frame):
