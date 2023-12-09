@@ -570,19 +570,19 @@ class QuizTakenPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        def back_click():
-            # label1.destroy()
-            # label2.destroy()
-            # button.destroy()
-            for widget in QuizTakenPage.winfo_children(self):
-                widget.destroy()
-            # QuizHomePage.pack_forget()
-            button3 = ttk.Button(self, text="Back", command=back_click)
-            button3.pack()
-            self.controller.show_frame(QuizHomePage)
-
-        button3 = ttk.Button(self, text="Back", command=back_click)
+        button3 = ttk.Button(self, text="Back", command=self.back_click)
         button3.pack()
+
+    def back_click(self):
+        # label1.destroy()
+        # label2.destroy()
+        # button.destroy()
+        for widget in QuizTakenPage.winfo_children(self):
+            widget.destroy()
+            # QuizHomePage.pack_forget()
+        button3 = ttk.Button(self, text="Back", command=self.back_click)
+        button3.pack()
+        self.controller.show_frame(QuizHomePage)
 
     def update(self):
         sql2 = f"SELECT * FROM users WHERE email = '{email}';"
@@ -641,6 +641,12 @@ class QuizTakenPage(tk.Frame):
         """
         cursor_obj.execute(delSQL)
         con.commit()
+        for widget in QuizTakenPage.winfo_children(self):
+            widget.destroy()
+        # QuizHomePage.pack_forget()
+        button3 = ttk.Button(self, text="Back", command=self.back_click)
+        button3.pack()
+        self.controller.show_frame(QuizTakenPage)
 
 
 class QuizNotTakenPage(tk.Frame):
