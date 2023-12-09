@@ -224,6 +224,43 @@ class ProfilePage(tk.Frame):
             else:
                 label = ttk.Label(self, text=f"Referred by: N")
 
+        def userStats():
+            countSQL = """
+            select count(user_id)
+            from users
+            """
+            cursor_obj.execute(countSQL)
+            res1 = cursor_obj.fetchall()
+
+            refSQL = """
+            select count(user_id)
+            from referred
+            """
+            cursor_obj.execute(refSQL)
+            res2 = cursor_obj.fetchall()
+
+            refGroupSQL = """
+            select referred_by, count(user_id)
+            from referred
+            group by referred_by
+            """
+            cursor_obj.execute(refGroupSQL)
+            res3 = cursor_obj.fetchall()
+            str = ""
+            str = str + f"Number of users: {res1[0][0]}"
+            str = str + f"\nNumber of users that have been referred: {res2[0][0]}"
+            str = str + f"\nUsers and how many others they have referred: \n"
+            for i in range(len(res3)):
+                temp = res3[i]
+                uID = temp[0]
+                ct = temp[1]
+                str = str + f"User ID: {uID} has referred {ct} other users\n"
+            # print()
+            messagebox.showinfo("User Stats", str)
+
+        button2 = tk.Button(self, text="User Stats", width=25, command=userStats)
+        button2.pack()
+
 
 class AccountCreationPage(tk.Frame):
     def __init__(self, parent, controller):
