@@ -523,6 +523,8 @@ class QuizTakenPage(tk.Frame):
         select quiz_id, score, letter_grade 
         from taken
         where user_id = '{userID}'
+        order by
+        quiz_id asc
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
@@ -585,6 +587,7 @@ class QuizNotTakenPage(tk.Frame):
         select quiz_id
         from quizzes
         where quizzes.quiz_id not in ({sql0})
+        order by quiz_id asc
         """
         cursor_obj.execute(sql)
         result = cursor_obj.fetchall()
@@ -873,12 +876,12 @@ class FlashcardHomePage(tk.Frame):
             # label1.destroy()
             # label2.destroy()
             # button.destroy()
-            for widget in FlashcardHomePage.winfo_children(self):
-                widget.destroy()
+            # for widget in FlashcardHomePage.winfo_children(self):
+            #     widget.destroy()
             # QuizHomePage.pack_forget()
             self.controller.show_frame(HomePage)
-            button3 = ttk.Button(self, text="Back", command=back_click)
-            button3.pack()
+            # button3 = ttk.Button(self, text="Back", command=back_click)
+            # button3.pack()
 
         button3 = ttk.Button(self, text="Back", command=back_click)
         button3.pack()
