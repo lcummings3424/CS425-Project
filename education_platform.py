@@ -4,12 +4,15 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import Label, StringVar
 
+# con = psycopg2.connect(
+#     database="test",
+#     user="postgres",
+#     password="postgres",
+#     host="localhost",
+#     port="5432",
+# )
 con = psycopg2.connect(
-    database="test",
-    user="postgres",
-    password="postgres",
-    host="localhost",
-    port="5432",
+    "postgres://nh_lc_educationplatform_user:ctX1mTYO5izqzBT38CShz4ZknhCeUmA4@dpg-clprccbd3o9c73evjtlg-a.ohio-postgres.render.com/nh_lc_educationplatform"
 )
 cursor_obj = con.cursor()
 email = ""
@@ -426,13 +429,13 @@ class AOFInfo(tk.Frame):
             result = cursor_obj.fetchall()
             query2 = f"""
             select max(ct)
-            from ({query})
+            from ({query}) as foo
             """
             cursor_obj.execute(query2)
             max = cursor_obj.fetchall()[0][0]
             query3 = f"""
             select area_name 
-            from ({query})
+            from ({query}) as foo
             where ct = {max}
             """
             cursor_obj.execute(query3)
